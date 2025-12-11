@@ -1,0 +1,23 @@
+{
+  "name": "Portfolio Lucena",
+  "short_name": "Portfolio Lucena",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#002b5e",
+  "theme_color": "#002b5e",
+  
+  "orientation": "any",  
+
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
