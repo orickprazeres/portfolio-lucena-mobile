@@ -24,10 +24,10 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #000; /* Fundo preto para evitar clarões */
-            overflow: hidden; /* Bloqueia barras de rolagem */
+            background-color: #000;
+            overflow: hidden; /* Importante: Bloqueia rolagens indesejadas */
             font-family: 'Segoe UI', sans-serif;
-            user-select: none; /* Impede seleção de texto */
+            user-select: none;
             -webkit-user-select: none;
         }
 
@@ -38,12 +38,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            
-            /* Gradiente Animado (Tons de Azul da sua logo/fundo) */
             background: linear-gradient(-45deg, #001f3f, #003366, #005b96, #001f3f);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite; /* Animação do fundo */
-            
+            animation: gradientBG 15s ease infinite;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -52,28 +49,20 @@
             transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
-        /* Classe para esconder a tela de carregamento */
         #loading-screen.hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
         }
 
-        /* --- ESTILO DA LOGO NA TELA DE CARREGAMENTO --- */
         .logo-container img {
-            width: 140px; /* Tamanho da logo */
+            width: 140px;
             height: auto;
             margin-bottom: 25px;
-            
-            /* --- AJUSTE DE POSIÇÃO --- */
-            margin-left: 0px; /* Adiciona margem a esquerda para empurrar a logo para a direita */
-            /* ------------------------- */
-
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
             animation: pulse 2.5s infinite ease-in-out;
         }
 
-        /* Texto "PORTFOLIO LUCENA" */
         .loading-text {
             color: #fff;
             font-size: 18px;
@@ -84,7 +73,6 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        /* Spinner (Rodinha girando) */
         .spinner {
             width: 35px;
             height: 35px;
@@ -99,6 +87,7 @@
             width: 100vw;
             height: 100vh;
             position: relative;
+            background-color: #000; /* Fundo preto caso o iframe demore a carregar */
         }
 
         iframe {
@@ -110,28 +99,35 @@
             left: 0;
         }
 
-        /* --- AJUSTES DO POWER BI (CORTES DE BORDA) --- */
+        /* --- CORREÇÃO DO POWER BI (SEM CORTES LATERAIS) --- */
         
-        /* Modo Retrato (Padrão) */
         .modo-powerbi {
-            width: 101% !important;
-            height: 109vh !important;
-            margin-top: -5px;
-            margin-left: -8px;
+            /* Força a largura exata da viewport */
+            width: 100vw !important; 
+            
+            /* Aumenta a altura para empurrar a barra inferior para fora */
+            height: 106vh !important; 
+            
+            /* Remove margens laterais que causavam o corte e o espaçamento */
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            
+            /* Ajuste vertical leve se necessário para esconder barra de topo (opcional) */
+            margin-top: -1px; 
+            
+            display: block;
         }
 
-        /* Modo Paisagem (Tablet Deitado) - Ajuste Específico */
+        /* Ajuste específico para Tablet/Paisagem */
         @media screen and (orientation: landscape) {
             .modo-powerbi {
-                width: 100% !important;
-                /* Aumenta a altura para garantir que a barra inferior suma mesmo deitado */
-                height: 112vh !important; 
+                width: 100vw !important;
+                height: 110vh !important; /* Mais altura no landscape para garantir o corte */
                 margin-top: 0;
-                margin-left: 0;
             }
         }
 
-        /* --- ANIMAÇÕES (KEYFRAMES) --- */
+        /* --- ANIMAÇÕES --- */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -159,21 +155,18 @@
 
     <div class="container">
         <iframe id="display-frame" class="modo-powerbi" 
-                src="https://app.powerbi.com/view?r=eyJrIjoiZTMwZWU3NWQtMTg5Yi00YmZlLWExYzMtNzNlNjdhYTg5MWYxIiwidCI6IjliMjc5MzAzLWY1ZWMtNDg5OC1hMzFjLWQ4NTZlOTcwN2EzZSJ9&pageName=54137e40c3b33a966405" 
+                src="https://app.powerbi.com/view?r=eyJrIjoiZDE0NDI2OWQtZmI1Zi00YTJlLWFiNmUtZWYwZjRhNDMzZTUxIiwidCI6IjliMjc5MzAzLWY1ZWMtNDg5OC1hMzFjLWQ4NTZlOTcwN2EzZSJ9&pageName=d939c6f9bd82a253938a" 
                 allowfullscreen>
         </iframe>
     </div>
 
     <script>
-        // Lógica da Tela de Carregamento
         window.addEventListener('load', () => {
-            // Espera 5 segundos para mostrar a animação e depois libera o App
             setTimeout(() => {
                 document.getElementById('loading-screen').classList.add('hidden');
             }, 5000); 
         });
 
-        // Registro do Service Worker (Obrigatório para instalar o App)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
